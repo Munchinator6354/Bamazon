@@ -9,20 +9,38 @@ var connection = mysql.createConnection({
     database: "bamazon"
 });
 
-connection.connect(function(err) {
+connection.connect(function (err) {
     if (err) throw err;
-    start();
+    displayMarket();
 });
 
-function start() {
-    inquirer
-        .prompt({
-            name: "whichItem",
-            type: "list",
-            message: "Which item_id would you like to purchase?"
-            list: []
-        })
-        .then(function(answer) {
-            if
-        })
+function displayMarket() {
+    connection.query("SELECT * FROM products", function (err, results) {
+        if (err) throw err;
+        inquirer
+            .prompt([
+                {
+                    name: "choice",
+                    type: "rawlist",
+                    message: "------------------------------\n Welcome to the Bamazon Market. Below are the available items. \n ------------------------------",
+                    choices: function () {
+                        var productsArray = [];
+                        for (var i = 0; i < results.length; i++) {
+                            productsArray.push(results[i].product_name);
+                        }
+                        return productsArray;
+                    }
+                }
+            ])
+            .then(function (answer) {
+                var chosenProduct;
+                for (var i = 0; i < results.length; i++) {
+                    if (results[i].product_name === answer.choice) {
+                        chosenItem = results[i];
+                    }
+                }
+            });
+    });
 }
+
+
