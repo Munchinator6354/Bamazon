@@ -1,7 +1,6 @@
 var inquirer = require("inquirer");
 var mysql = require("mysql");
-// var cTable = 
-// require("console.table");
+
 
 
 var connection = mysql.createConnection({
@@ -25,7 +24,7 @@ function displayMarket() {
             {
                 type: "input",
                 name: "whichID",
-                message: "------------------------------\n Please select the ID of the item you would like to buy from the table above. \n ------------------------------",
+                message: "------------------------------\n Please select the item_id of the item you would like to buy from the table above. \n ------------------------------",
                 choices: function () {
                     var productsArray = [];
                     for (var i = 0; i < results.length; i++) {
@@ -60,10 +59,10 @@ function displayMarket() {
                 // console.log(productExists);
                 enoughQuantity(productExists, chosenQuantity);
                 processTransaction(productExists, chosenQuantity);
+                displayMarket();
             });
     })
-
-    // when creating a function, you can use a placeholder title/word for what is being passed through the function. When you are actually calling or invoking the function, it must specifically pass what you are intending.
+    
     function checkIfInTable(results, itemID) {
         for (var i = 0; i < results.length; i++) {
             if (results[i].item_id === itemID) {
